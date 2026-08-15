@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TeamTaskManager.Dtos;
+using TeamTaskManager.Dtos.Auth;
 using TeamTaskManager.Services.ServicesAbstractions;
 
 namespace TeamTaskManager.Controllers

@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using TeamTaskManager.Domain;
-using TeamTaskManager.Dtos;
+using TeamTaskManager.Dtos.Auth;
 using TeamTaskManager.Services.ServicesAbstractions;
 
 namespace TeamTaskManager.Services.Implementations

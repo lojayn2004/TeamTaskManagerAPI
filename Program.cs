@@ -6,7 +6,7 @@ using System.Text;
 using TeamTaskManager;
 using TeamTaskManager.Data;
 using TeamTaskManager.Domain;
-using TeamTaskManager.Dtos;
+using TeamTaskManager.Dtos.Auth;
 using TeamTaskManager.Services.Implementations;
 using TeamTaskManager.Services.ServicesAbstractions;
 

@@ -1,4 +1,4 @@
-﻿using TeamTaskManager.Dtos;
+﻿using TeamTaskManager.Dtos.Auth;
 
 namespace TeamTaskManager.Services.ServicesAbstractions
 {

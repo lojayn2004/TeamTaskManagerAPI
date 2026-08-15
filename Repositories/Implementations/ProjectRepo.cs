@@ -7,16 +7,17 @@ namespace TeamTaskManager.Repositories.Implementations
 {
     public class ProjectRepo(ApplicationDbContext _dbContext) : IProjectRepo
     {
-        public void AddProject(Project project)
+        public async Task<bool> AddProjectAsync(Project project)
         {
-            _dbContext.Projects.Add(project);
-            _dbContext.SaveChanges();
+            
+            await _dbContext.Projects.AddAsync(project);
+            return _dbContext.SaveChanges() > 0;
         }
 
-        public void DeleteProject(Project project)
+        public bool DeleteProject(Project project)
         {
             _dbContext.Projects.Remove(project);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges() > 0;
         }
 
         public async Task<IEnumerable<Project>> GetAllProjectsAsync()
@@ -25,15 +26,17 @@ namespace TeamTaskManager.Repositories.Implementations
 
         }
 
-        public async Task<Project?> GetProjectByIdAsync(string projectId)
+        public async Task<Project?> GetProjectByIdAsync(Guid projectId)
         {
             return await _dbContext.Projects.FindAsync(projectId);
         }
 
-        public void UpdateProject(Project project)
+        public bool UpdateProject(Project project)
         {
             _dbContext.Projects.Update(project);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges() > 0;
         }
+
+       
     }
 }

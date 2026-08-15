@@ -1,4 +1,4 @@
-﻿namespace TeamTaskManager.Dtos
+﻿namespace TeamTaskManager.Dtos.Auth
 {
     public class LoginDto
     {

@@ -1,18 +1,19 @@
 ﻿using TeamTaskManager.Domain;
-using TeamTaskManager.Dtos;
+using TeamTaskManager.Dtos.Project;
+using TeamTaskManager.Dtos.Result;
 
 namespace TeamTaskManager.Services.ServicesAbstractions
 {
     public interface IProjectService
     {
-        public Task<ProjectDto?> GetProjectByIdAsync(string projectId);
+        public Task<ServiceResult<ProjectDto?>> GetProjectByIdAsync(Guid projectId);
 
-        public void AddProject(ProjectDto project);
+        public Task<ServiceResult<ProjectDto>> AddProject(CreateProjectDto project);
 
-        public void DeleteProject(ProjectDto project);
+        public Task<ServiceResult<string>> DeleteProject(Guid projectId);
 
-        public void UpdateProject(ProjectDto project);
+        public Task<ServiceResult<ProjectDto?>> UpdateProject(ProjectDto project);
 
-        public Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
+        public Task<ServiceResult<IEnumerable<ProjectDto>>> GetAllProjectsAsync();
     }
 }
