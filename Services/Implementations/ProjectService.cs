@@ -23,6 +23,7 @@ namespace TeamTaskManager.Services.Implementations
 
             if (project == null)
                 return ServiceResult<string>.NotFound($"Project with id {projectId} is not found");
+            _projectRepo.DeleteProject(project);
             return ServiceResult<string>.Ok($"Project With Id {projectId} is deleted successfully");
         }
 
