@@ -2,6 +2,7 @@
 
 namespace TeamTaskManager.Dtos.Result
 {
+    
     public class ServiceResult<T>
     {
         public bool Success { get; set; }
@@ -18,6 +19,17 @@ namespace TeamTaskManager.Dtos.Result
                 Success = true,
                 ErrorType = ServiceError.None,
                 Data = data
+            };
+        }
+
+
+        public static ServiceResult<T> Error(ServiceError error, string message)
+        {
+            return new ServiceResult<T>
+            {
+                Success = false,
+                ErrorType = error,
+                Message = message
             };
         }
         public static ServiceResult<T> NotFound(string message)

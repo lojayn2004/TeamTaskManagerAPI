@@ -42,7 +42,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<ProjectDto?>.Ok(mappedProject);
         }
 
-        public async Task<ServiceResult<ProjectDto?>> UpdateProject(ProjectDto projectDto)
+        public async Task<ServiceResult<ProjectDto?>> UpdateProject(UpdateProjectDto projectDto)
         {
             var project = await _projectRepo.GetProjectByIdAsync(projectDto.Id);
             if (project == null)

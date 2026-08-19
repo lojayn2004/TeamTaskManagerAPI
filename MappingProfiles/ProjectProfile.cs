@@ -18,6 +18,8 @@ namespace TeamTaskManager.MappingProfiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
+            CreateMap<UpdateProjectDto, Project>();
+
 
         }
     }

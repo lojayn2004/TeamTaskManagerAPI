@@ -29,6 +29,7 @@ namespace TeamTaskManager.Data.Specifications
 
             builder.Property(t => t.TaskStatus)
                    .HasConversion<string>()
+                   .HasMaxLength(50)
                    .IsRequired();
         }
     }

@@ -7,6 +7,9 @@ using TeamTaskManager;
 using TeamTaskManager.Data;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Auth;
+using TeamTaskManager.MappingProfiles;
+using TeamTaskManager.Repositories.Contracts;
+using TeamTaskManager.Repositories.Implementations;
 using TeamTaskManager.Services.Implementations;
 using TeamTaskManager.Services.ServicesAbstractions;
 
@@ -30,6 +33,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProjectRepo, ProjectRepo>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -45,6 +50,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
         };
     });
+
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(ProjectProfile));
 
 builder.Services.AddAuthorization();
 

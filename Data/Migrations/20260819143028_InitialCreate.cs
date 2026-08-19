@@ -118,6 +118,7 @@ namespace TeamTaskManager.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     CreatedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -184,7 +185,7 @@ namespace TeamTaskManager.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    TaskStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaskStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AssignedUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },

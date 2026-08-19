@@ -15,5 +15,8 @@ namespace TeamTaskManager.Services.ServicesAbstractions
         public Task<ServiceResult<TaskItemDto?>> UpdateTask(TaskItemDto task);
 
         public Task<ServiceResult<IEnumerable<TaskItemDto>>> GetAllTasksAsync();
+
+       
     }
+
 }

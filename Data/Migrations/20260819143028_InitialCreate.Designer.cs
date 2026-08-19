@@ -12,7 +12,7 @@ using TeamTaskManager.Data;
 namespace TeamTaskManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260802104723_InitialCreate")]
+    [Migration("20260819143028_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -242,6 +242,10 @@ namespace TeamTaskManager.Data.Migrations
                     b.Property<string>("CreatedByUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -273,7 +277,8 @@ namespace TeamTaskManager.Data.Migrations
 
                     b.Property<string>("TaskStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()

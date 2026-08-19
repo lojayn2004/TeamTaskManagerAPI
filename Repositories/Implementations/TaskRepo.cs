@@ -13,13 +13,13 @@ namespace TeamTaskManager.Repositories.Implementations
             return _dbContext.SaveChanges() > 0;
         }
 
-        public bool DeleteProject(TaskItem taskItem)
+        public bool DeleteTask(TaskItem taskItem)
         {
             _dbContext.TaskItems.Remove(taskItem);
             return _dbContext.SaveChanges() > 0;
         }
 
-        public async Task<IEnumerable<TaskItem>> GetAllProjectsAsync()
+        public async Task<IEnumerable<TaskItem>> GetAllTasksAsync()
         {
             return await _dbContext.TaskItems.ToListAsync();
         }
@@ -30,7 +30,7 @@ namespace TeamTaskManager.Repositories.Implementations
            
         }
 
-        public bool UpdateProject(TaskItem taskItem)
+        public bool UpdateTask(TaskItem taskItem)
         {
             _dbContext.TaskItems.Update(taskItem);
             return _dbContext.SaveChanges() > 0;

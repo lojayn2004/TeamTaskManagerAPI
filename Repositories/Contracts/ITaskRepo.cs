@@ -8,10 +8,10 @@ namespace TeamTaskManager.Repositories.Contracts
 
         public Task<bool> AddTaskAsync(TaskItem taskItem);
 
-        public bool DeleteProject(TaskItem taskItem);
+        public bool DeleteTask(TaskItem taskItem);
 
-        public bool UpdateProject(TaskItem taskItem);
+        public bool UpdateTask(TaskItem taskItem);
 
-        public Task<IEnumerable<TaskItem>> GetAllProjectsAsync();
+        public Task<IEnumerable<TaskItem>> GetAllTasksAsync();
     }
 }

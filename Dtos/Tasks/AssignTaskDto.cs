@@ -4,8 +4,6 @@
     {
         public string AssignedUserId { get; set; } = string.Empty;
 
-        public Guid ProjectId { get; set; }
-
         public Guid TaskId { get; set; }
     }
 }

@@ -2,16 +2,15 @@
 
 namespace TeamTaskManager.Dtos.Project
 {
-    public class CreateProjectDto
+    public class UpdateProjectDto
     {
-        
+        [Required]
+        public Guid Id { get; set; }
+
         [Required]
         public string Name { get; set; } = default!;
 
         [Required]
         public string Description { get; set; } = default!;
-
     }
-
-
 }
