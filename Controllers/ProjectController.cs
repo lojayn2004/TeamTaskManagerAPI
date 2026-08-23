@@ -16,7 +16,7 @@ namespace TeamTaskManager.Controllers
         public async Task<IActionResult> CreateProject(CreateProjectDto createProjectDto)
         {
             var projectResult = await _projectService.AddProject(createProjectDto);
-            return GetActionResult<ProjectDto?>(projectResult);
+            return GetActionResult<ProjectDto>(projectResult);
         }
 
         [HttpGet("projectId")]

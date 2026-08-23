@@ -1,15 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Result;
 using TeamTaskManager.Dtos.Tasks;
+using TeamTaskManager.Hubs;
 using TeamTaskManager.Repositories.Contracts;
 using TeamTaskManager.Services.Contracts;
+using TeamTaskManager.Specfications;
 
 namespace TeamTaskManager.Services.Implementations
 {
     public class UserTaskService(ITaskRepo _taskRepo, 
-        UserManager<ApplicationUser> _userManager, IMapper _mapper): IUserTaskService
+        UserManager<ApplicationUser> _userManager,
+        IMapper _mapper,
+        IHubContext<NotificationHub> _hubContext,
+        INotificationRepo _notificationRepo) : IUserTaskService
     {
         public async Task<ServiceResult<TaskItemDto>> AssignTaskToUser(AssignTaskDto taskDto)
         {
@@ -30,14 +36,19 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<TaskItemDto>.Ok(mappedTask);
         }
 
-        public Task<ServiceResult<IEnumerable<TaskItemDto>>> GetUserTasks(string UserId)
+        public async Task<ServiceResult<IEnumerable<TaskItemDto>>> GetUserTasks(string UserId)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(UserId);
+            if (user == null)
+                return ServiceResult<IEnumerable<TaskItemDto>>.Error(ServiceError.NotFound, $"User with Id {UserId} is Not Found");
+            var userTaskSpec = new UserTasksSpecification(UserId);
+            var tasks =  await _taskRepo.GetAllTasksAsync(userTaskSpec);
+            return ServiceResult<IEnumerable<TaskItemDto>>.Ok(_mapper.Map<IEnumerable<TaskItemDto>>(tasks));
         }
 
         public async Task<ServiceResult<TaskItemDto>> MarkTaskAsDone(Guid taskId, string UserId)
         {
-            var task = await _taskRepo.GetTaskByIdAsync(taskId);
+            var task = await _taskRepo.GetTaskByIdAsync(new TaskWithProjectSpecification(taskId));
             if (task == null)
                 return ServiceResult<TaskItemDto>.Error(ServiceError.NotFound, $"Task with Id {taskId} is Not Found");
 
@@ -49,8 +60,25 @@ namespace TeamTaskManager.Services.Implementations
                 return ServiceResult<TaskItemDto>.Error(ServiceError.UnAuthorized, $"Cannot Mark Task As Done, UnAuthorized User {UserId}");
             
             task.TaskStatus = Domain.TaskStatus.Done;
-
             _taskRepo.UpdateTask(task);
+
+
+            if (task.Project.CreatedByUserId != null)
+            {
+                string message =  $"Task {taskId} is completed by Employee {user.Email}.";
+                await _hubContext.Clients.User(task.Project.CreatedByUserId)
+                       .SendAsync("ReceiveTaskNotification",message);
+
+                await _notificationRepo.AddNotificationAsync(new Notification()
+                {
+                    UserId = task.Project.CreatedByUserId,
+                    SentAt = DateTime.Now,
+                    Message = message
+                });
+            }
+
+
+
             var mappedTask = _mapper.Map<TaskItemDto>(task);
             return ServiceResult<TaskItemDto>.Ok(mappedTask);
         }

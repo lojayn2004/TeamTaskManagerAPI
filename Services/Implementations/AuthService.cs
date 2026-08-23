@@ -1,40 +1,40 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Auth;
+using TeamTaskManager.Dtos.Result;
 using TeamTaskManager.Services.ServicesAbstractions;
+using TeamTaskManager.Utils;
 
 namespace TeamTaskManager.Services.Implementations
 {
     public class AuthService(UserManager<ApplicationUser> _userManager, 
          IOptions<JwtConfigurations> _jwtOptions): IAuthService
     {
-        public async Task<AuthResponseDto> Login(LoginDto loginDto)
+        public async Task<ServiceResult<AuthResponseDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
-                return null;
+                return ServiceResult<AuthResponseDto>.Error(ServiceError.UnAuthorized, "Incorrect Email Or Password");
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!isPasswordValid)
-                return null;
+                return ServiceResult<AuthResponseDto>.Error(ServiceError.UnAuthorized, "Incorrect Email Or Password");
 
-            return new AuthResponseDto
+            var authDto =  new AuthResponseDto
             {
                 UserId = user.Id,
                 Email = user.Email,
-                Token = await GenerateJwtToken(user)
+                Token = await JwtHelper.GenerateJwtToken(user, _userManager, _jwtOptions)
             };
+            return ServiceResult<AuthResponseDto>.Ok(authDto);
         }
 
-        public async Task<AuthResponseDto> Register(RegisterDto registerDto)
+        public async Task<ServiceResult<AuthResponseDto>> Register(RegisterDto registerDto)
         {
             var user = await _userManager.FindByEmailAsync(registerDto.Email);
             if (user != null)
-                return null;
+                return ServiceResult<AuthResponseDto>.Error(ServiceError.Conflict, "Email Already Registered");
             var applicationUser = new ApplicationUser()
             {
                 UserName = registerDto.UserName,
@@ -44,6 +44,10 @@ namespace TeamTaskManager.Services.Implementations
             var result = await _userManager.CreateAsync(applicationUser, registerDto.Password);
             if(!result.Succeeded)
             {
+                foreach(var error in result.Errors)
+                {
+                    Console.WriteLine(error.Description);
+                }
                 return null;
                 
             }
@@ -54,45 +58,15 @@ namespace TeamTaskManager.Services.Implementations
             }
 
 
-            return new AuthResponseDto
+            var authDto =  new AuthResponseDto
             {
                 UserId = applicationUser.Id,
                 Email = applicationUser.Email,
-                Token = await GenerateJwtToken(applicationUser)
+                Token = await JwtHelper.GenerateJwtToken(applicationUser, _userManager, _jwtOptions)
             };
+            return ServiceResult<AuthResponseDto>.Ok(authDto);
         }
 
-        private async Task<string> GenerateJwtToken(ApplicationUser user)
-        {
-            var claims = await GetClaims(user);
-            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtOptions.Value.Key));
-            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var securityToken = new JwtSecurityToken(
-                claims: claims,
-                issuer: _jwtOptions.Value.Issuer,
-                audience: _jwtOptions.Value.Audience,
-                signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddDays(7)
-                );
-            var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
-            return token;
-        }
-
-        private async Task<List<Claim>> GetClaims(ApplicationUser user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-            return claims;
-        }
+     
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TeamTaskManager.Dtos.Result;
 
 namespace TeamTaskManager.Controllers
@@ -7,6 +8,9 @@ namespace TeamTaskManager.Controllers
    
     public abstract class ApiBaseController: ControllerBase
     {
+        protected string? UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        protected string? UserName => User.FindFirst(ClaimTypes.Name)?.Value;
+        protected string? UserEmail => User.FindFirst(ClaimTypes.Email)?.Value;
 
         protected IActionResult GetActionResult<T> (ServiceResult<T> result)
         {

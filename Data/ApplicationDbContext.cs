@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TeamTaskManager.Data.Configurations;
 using TeamTaskManager.Data.Specifications;
 using TeamTaskManager.Domain;
 
@@ -22,6 +23,7 @@ namespace TeamTaskManager.Data
 
             builder.ApplyConfiguration(new ProjectConfigurations());
             builder.ApplyConfiguration(new TaskConfigurations());
+            builder.ApplyConfiguration(new NotificationConfiguration());
            
         }
         public DbSet<ApplicationUser> Users { get; set; }
@@ -29,5 +31,7 @@ namespace TeamTaskManager.Data
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<TaskItem> TaskItems { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

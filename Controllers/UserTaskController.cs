@@ -1,29 +1,28 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeamTaskManager.Dtos.Tasks;
+using TeamTaskManager.Services.Contracts;
 
 namespace TeamTaskManager.Controllers
 {
     
     [ApiController]
     [Route("api/user-tasks")]
-    public class UserTaskController: ApiBaseController
+    public class UserTaskController(IUserTaskService _userTaskService): ApiBaseController
     {
-        // mark task as done
-
         [HttpPut("mark")]
-        public Task<IActionResult> MarkTaskAsDone(MarkTaskDoneDto markTaskDoneDto)
+        public async Task<IActionResult> MarkTaskAsDone(Guid taskId)
         {
-            throw new NotImplementedException();
+            var markAsDoneResult = await _userTaskService.MarkTaskAsDone(taskId, UserId!);
+            return GetActionResult<TaskItemDto>(markAsDoneResult);
         }
 
-
-        // get all my tasks 
-
         [HttpGet]
-        public Task<IActionResult> GetUserTasks()
+        public async Task<IActionResult> GetUserTasks()
         {
-            throw new NotImplementedException();
+            var userTasks = await  _userTaskService.GetUserTasks(UserId!);
+            return GetActionResult<IEnumerable<TaskItemDto>>(userTasks);
+
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using TeamTaskManager.Domain;
+using TeamTaskManager.Specfications;
 
 namespace TeamTaskManager.Repositories.Contracts
 {
     public interface ITaskRepo
     {
         public Task<TaskItem?> GetTaskByIdAsync(Guid taskId);
+        public Task<TaskItem?> GetTaskByIdAsync(ISpecification<TaskItem> spec = null);
 
         public Task<bool> AddTaskAsync(TaskItem taskItem);
 
@@ -12,6 +14,6 @@ namespace TeamTaskManager.Repositories.Contracts
 
         public bool UpdateTask(TaskItem taskItem);
 
-        public Task<IEnumerable<TaskItem>> GetAllTasksAsync();
+        public Task<IEnumerable<TaskItem>> GetAllTasksAsync(ISpecification<TaskItem> spec = null);
     }
 }

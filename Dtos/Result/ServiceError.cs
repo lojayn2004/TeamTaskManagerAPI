@@ -5,6 +5,7 @@
         UnAuthorized = 0,
         NotFound,
         Validation,
+        Conflict,
         None
 
     }

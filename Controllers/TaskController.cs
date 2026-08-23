@@ -1,8 +1,8 @@
-﻿
-
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeamTaskManager.Dtos.Tasks;
+using TeamTaskManager.Services.Contracts;
+using TeamTaskManager.Services.Implementations;
 using TeamTaskManager.Services.ServicesAbstractions;
 
 namespace TeamTaskManager.Controllers
@@ -10,48 +10,51 @@ namespace TeamTaskManager.Controllers
     [Authorize(Roles = "Manager")]
     [ApiController]
     [Route("api/[controller]")]
-    public class TaskController(ITaskService _taskService) : ApiBaseController
+    public class TaskController(ITaskService _taskService, IUserTaskService _userTaskService) : ApiBaseController
     {
         [HttpPost]
-        public Task<IActionResult> CreateTask(CreateTaskDto createTaskDto)
+        public async Task<IActionResult> CreateTask(CreateTaskDto createTaskDto)
         {
             //if(!ModelState.IsValid) 
             //    return BadRequest();
 
-            //var projectResult = _projectService.AddProject(createProjectDto);
-
-            //return Task.FromResult("");
-            throw new NotImplementedException();
+            var taskResult = await _taskService.AddTask(createTaskDto);
+            return GetActionResult<TaskItemDto>(taskResult);
+         
         }
         [HttpPut]
-        public Task<IActionResult> UpdateTask(TaskItemDto taskItemDto)
+        public async Task<IActionResult> UpdateTask(TaskItemDto taskItemDto)
         {
-            throw new NotImplementedException();
+            var taskResult = await _taskService.UpdateTask(taskItemDto);
+            return GetActionResult<TaskItemDto>(taskResult);
         }
 
 
         [HttpDelete]
-        public Task<IActionResult> DeleteTask(Guid taskId)
+        public async Task<IActionResult> DeleteTask(Guid taskId)
         {
-            throw new NotImplementedException();
+            var taskResult = await _taskService.DeleteTask(taskId);
+            return GetActionResult<string>(taskResult);
         }
         [HttpPost("assign")]
-        public Task<IActionResult> AssignTaskToUser(AssignTaskDto assignTaskDto)
+        public async Task<IActionResult> AssignTaskToUser(AssignTaskDto assignTaskDto)
         {
-            throw new NotImplementedException();
+            var taskResult = await _userTaskService.AssignTaskToUser(assignTaskDto);
+            return GetActionResult<TaskItemDto>(taskResult);
         }
 
-        // need authorization manager
         [HttpGet]
-        public Task<IActionResult> GetAllTasks()
+        public async Task<IActionResult> GetAllTasks()
         {
-            throw new NotImplementedException();
+            var tasksResult = await _taskService.GetAllTasksAsync();
+            return GetActionResult<IEnumerable<TaskItemDto>>(tasksResult);
         }
 
         [HttpGet("id")]
-        public Task<IActionResult> GetTaskById(Guid taskId)
+        public async Task<IActionResult> GetTaskById(Guid taskId)
         {
-            throw new NotImplementedException();
+            var taskResult = await _taskService.GetTaskByIdAsync(taskId);
+            return GetActionResult<TaskItemDto?>(taskResult);
         }
     }
 

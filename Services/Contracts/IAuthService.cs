@@ -1,11 +1,12 @@
 ﻿using TeamTaskManager.Dtos.Auth;
+using TeamTaskManager.Dtos.Result;
 
 namespace TeamTaskManager.Services.ServicesAbstractions
 {
     public interface IAuthService
     {
-        public Task<AuthResponseDto> Login(LoginDto loginDto);
+        public Task<ServiceResult<AuthResponseDto>> Login(LoginDto loginDto);
 
-        public Task<AuthResponseDto> Register(RegisterDto registerDto);
+        public Task<ServiceResult<AuthResponseDto>> Register(RegisterDto registerDto);
     }
 }
