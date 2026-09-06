@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using TeamTaskManager;
 using TeamTaskManager.Extensions;
 using TeamTaskManager.Hubs;
+using TeamTaskManager.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,7 @@ var app = builder.Build();
 
 
 await app.SeedDBAsync();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 
 if (app.Environment.IsDevelopment())
