@@ -6,7 +6,9 @@ namespace TeamTaskManager.Specfications
     {
         public TaskWithProjectSpecification(Guid taskId) : base(t => t.Id ==  taskId) 
         {
+            Console.WriteLine("Size Before: " + IncludeClause.Count);
             AddInclude(t => t.Project);
+            Console.WriteLine("Size After: " + IncludeClause.Count);
         }
     }
 }

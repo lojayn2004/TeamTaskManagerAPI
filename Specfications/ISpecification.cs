@@ -6,7 +6,7 @@ namespace TeamTaskManager.Specfications
     {
         public Expression<Func<T, bool>>? WhereClause { get; }
 
-        public IEnumerable<Expression<Func<T, object>>> IncludeClause { get; } 
+        public List<Expression<Func<T, object>>> IncludeClause { get; protected set; }
 
     }
 }

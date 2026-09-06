@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -17,6 +17,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="TeamTaskManager.Tests\**" />
+    <Content Remove="TeamTaskManager.Tests\**" />
+    <EmbeddedResource Remove="TeamTaskManager.Tests\**" />
+    <None Remove="TeamTaskManager.Tests\**" />
   </ItemGroup>
 
 </Project>

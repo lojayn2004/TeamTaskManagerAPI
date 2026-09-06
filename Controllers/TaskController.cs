@@ -7,7 +7,7 @@ using TeamTaskManager.Services.ServicesAbstractions;
 
 namespace TeamTaskManager.Controllers
 {
-    //[Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "ManagerOnly")]
     [ApiController]
     [Route("api/[controller]")]
     public class TaskController(ITaskService _taskService, IUserTaskService _userTaskService) : ApiBaseController

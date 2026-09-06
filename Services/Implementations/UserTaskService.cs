@@ -49,9 +49,12 @@ namespace TeamTaskManager.Services.Implementations
         public async Task<ServiceResult<TaskItemDto>> MarkTaskAsDone(Guid taskId, string UserId)
         {
             var task = await _taskRepo.GetTaskByIdAsync(new TaskWithProjectSpecification(taskId));
+            
             if (task == null)
                 return ServiceResult<TaskItemDto>.Error(ServiceError.NotFound, $"Task with Id {taskId} is Not Found");
 
+            Console.WriteLine("===================================================================");
+            Console.WriteLine(task.Project.CreatedByUserId);
             var user = await _userManager.FindByIdAsync(UserId);
             if (user == null)
                 return ServiceResult<TaskItemDto>.Error(ServiceError.NotFound, $"User with Id {UserId} is Not Found");
@@ -61,6 +64,8 @@ namespace TeamTaskManager.Services.Implementations
             
             task.TaskStatus = Domain.TaskStatus.Done;
             _taskRepo.UpdateTask(task);
+            Console.WriteLine("===================================================================");
+            Console.WriteLine(task.Project.CreatedByUserId);
 
 
             if (task.Project.CreatedByUserId != null)
