@@ -8,7 +8,7 @@ using TeamTaskManager.Data;
 
 #nullable disable
 
-namespace TeamTaskManager.Data.Migrations
+namespace TeamTaskManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -394,7 +394,7 @@ namespace TeamTaskManager.Data.Migrations
             modelBuilder.Entity("TeamTaskManager.Domain.TaskItem", b =>
                 {
                     b.HasOne("TeamTaskManager.Domain.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("AssignedUserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
@@ -412,6 +412,8 @@ namespace TeamTaskManager.Data.Migrations
             modelBuilder.Entity("TeamTaskManager.Domain.ApplicationUser", b =>
                 {
                     b.Navigation("Notifications");
+
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

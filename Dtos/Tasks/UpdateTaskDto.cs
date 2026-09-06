@@ -1,8 +1,6 @@
-﻿using TeamTaskManager.Domain;
-
-namespace TeamTaskManager.Dtos.Tasks
+﻿namespace TeamTaskManager.Dtos.Tasks
 {
-    public class TaskItemDto
+    public class UpdateTaskDto
     {
         public Guid Id { get; set; }
 
@@ -11,11 +9,6 @@ namespace TeamTaskManager.Dtos.Tasks
 
         public string TaskStatus { get; set; }
 
-        public Guid ProjectId { get; set; }
-
-        public string? AssignedUserId { get; set; } = string.Empty;
-
-     
        
     }
 }

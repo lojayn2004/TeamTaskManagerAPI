@@ -23,7 +23,7 @@ namespace TeamTaskManager.Data.Specifications
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(t => t.User) 
-                   .WithMany() 
+                   .WithMany(u => u.Tasks) 
                    .HasForeignKey(t => t.AssignedUserId)
                    .OnDelete(DeleteBehavior.SetNull);
 

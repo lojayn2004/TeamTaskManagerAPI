@@ -6,21 +6,21 @@ namespace TeamTaskManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController(IAuthService _authService) : ControllerBase
+    public class AuthController(IAuthService _authService) : ApiBaseController
     {
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var result = await _authService.Login(loginDto);
-            return Ok(result);
+            return GetActionResult(result);
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto registerDto)
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var result = await _authService.Register(registerDto);
-            return Ok(result);
+            return GetActionResult(result);
         }
     }
 

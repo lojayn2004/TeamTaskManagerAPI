@@ -11,6 +11,8 @@ namespace TeamTaskManager.MappingProfiles
             CreateMap<CreateTaskDto, TaskItem>();
 
             CreateMap<TaskItem, TaskItemDto>();
+
+            CreateMap<UpdateTaskDto, TaskItem>();
         }
     }
 }

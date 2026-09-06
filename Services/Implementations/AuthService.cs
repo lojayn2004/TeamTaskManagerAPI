@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Auth;
 using TeamTaskManager.Dtos.Result;
@@ -42,6 +43,7 @@ namespace TeamTaskManager.Services.Implementations
                 FullName = registerDto.FullName
             };
             var result = await _userManager.CreateAsync(applicationUser, registerDto.Password);
+            // TODO: ADD BETTER ERROR MESSAGES 
             if(!result.Succeeded)
             {
                 foreach(var error in result.Errors)
@@ -54,15 +56,23 @@ namespace TeamTaskManager.Services.Implementations
             var roleResult = await _userManager.AddToRoleAsync(applicationUser, registerDto.Role);
             if(!roleResult.Succeeded)
             {
+               
                 return null;
             }
-
+            Console.WriteLine("===============================================================");
+            Console.WriteLine("Added Success");
+            string token = await JwtHelper.GenerateJwtToken(applicationUser, _userManager, _jwtOptions);
+            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            foreach (var c in jwt.Claims)
+            {
+                Console.WriteLine($"{c.Type} = {c.Value}");
+            }
 
             var authDto =  new AuthResponseDto
             {
                 UserId = applicationUser.Id,
                 Email = applicationUser.Email,
-                Token = await JwtHelper.GenerateJwtToken(applicationUser, _userManager, _jwtOptions)
+                Token = token
             };
             return ServiceResult<AuthResponseDto>.Ok(authDto);
         }

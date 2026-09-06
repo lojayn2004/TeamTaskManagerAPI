@@ -10,5 +10,7 @@ namespace TeamTaskManager.Domain
 
         public List<Notification> Notifications { get; set; }
 
+        public List<TaskItem> Tasks { get; set; }
+
     }
 }

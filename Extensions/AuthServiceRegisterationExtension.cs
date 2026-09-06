@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using TeamTaskManager.Dtos.Auth;
 
@@ -11,8 +12,13 @@ namespace TeamTaskManager.Extensions
         {
             builder.Services.Configure<JwtConfigurations>(builder.Configuration.GetSection("JWT"));
 
+           
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -26,7 +32,18 @@ namespace TeamTaskManager.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
                     };
                 });
-            builder.Services.AddAuthorization();
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ManagerOnly", policy =>
+                    policy.RequireRole("Manager"));
+
+
+                options.AddPolicy("EmployeeOnly", policy =>
+                    policy.RequireRole("Employee"));
+            });
+
+
 
             return builder;
 

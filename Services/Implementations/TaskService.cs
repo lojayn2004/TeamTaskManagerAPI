@@ -12,11 +12,17 @@ namespace TeamTaskManager.Services.Implementations
         public async Task<ServiceResult<TaskItemDto>> AddTask(CreateTaskDto createTaskDto)
         {
             var task = _mapper.Map<TaskItem>(createTaskDto);
+
             var project = await _projectRepo.GetProjectByIdAsync(createTaskDto.ProjectId);
             if (project == null)
+            
                 return ServiceResult<TaskItemDto>.Error(ServiceError.NotFound, $"Cannot Add Task, Project with Id {createTaskDto.ProjectId} is Not Found");
+            task.AssignedUserId = null;
+
 
             await _taskRepo.AddTaskAsync(task);
+            Console.WriteLine(task.AssignedUserId);
+            Console.WriteLine(task.Title);
             var taskDto = _mapper.Map<TaskItemDto>(task);
             return ServiceResult<TaskItemDto>.Ok(taskDto);
         }
@@ -48,7 +54,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<TaskItemDto?>.Ok(mappedTask);
         }
 
-        public async Task<ServiceResult<TaskItemDto?>> UpdateTask(TaskItemDto taskDto)
+        public async Task<ServiceResult<TaskItemDto?>> UpdateTask(UpdateTaskDto taskDto)
         {
             var task = await _taskRepo.GetTaskByIdAsync(taskDto.Id);
             if (task == null)
@@ -57,7 +63,7 @@ namespace TeamTaskManager.Services.Implementations
             _mapper.Map(taskDto, task);
             _taskRepo.UpdateTask(task);
 
-            var mappedTask = _mapper.Map<TaskItemDto>(taskDto);
+            var mappedTask = _mapper.Map<TaskItemDto>(task);
             return ServiceResult<TaskItemDto?>.Ok(mappedTask);
         }
     }

@@ -5,7 +5,8 @@ using TeamTaskManager.Services.Contracts;
 
 namespace TeamTaskManager.Controllers
 {
-    
+
+    //[Authorize(Policy = "EmployeeOnly")]
     [ApiController]
     [Route("api/user-tasks")]
     public class UserTaskController(IUserTaskService _userTaskService): ApiBaseController

@@ -12,7 +12,7 @@ namespace TeamTaskManager.Services.ServicesAbstractions
 
         public Task<ServiceResult<string>> DeleteTask(Guid taskId);
 
-        public Task<ServiceResult<TaskItemDto?>> UpdateTask(TaskItemDto task);
+        public Task<ServiceResult<TaskItemDto?>> UpdateTask(UpdateTaskDto task);
 
         public Task<ServiceResult<IEnumerable<TaskItemDto>>> GetAllTasksAsync();
 

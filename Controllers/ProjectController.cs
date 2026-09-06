@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Project;
-using TeamTaskManager.Dtos.Result;
 using TeamTaskManager.Services.ServicesAbstractions;
 
 namespace TeamTaskManager.Controllers
 {
-    //[Authorize(Roles = "Manager")]
+    //[Authorize]
+    [Authorize(Policy = "ManagerOnly")]
     [ApiController]
     [Route("api/[controller]")]
     public class ProjectController(IProjectService _projectService): ApiBaseController

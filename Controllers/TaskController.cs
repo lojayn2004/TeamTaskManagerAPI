@@ -7,7 +7,7 @@ using TeamTaskManager.Services.ServicesAbstractions;
 
 namespace TeamTaskManager.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    //[Authorize(Policy = "ManagerOnly")]
     [ApiController]
     [Route("api/[controller]")]
     public class TaskController(ITaskService _taskService, IUserTaskService _userTaskService) : ApiBaseController
@@ -23,7 +23,7 @@ namespace TeamTaskManager.Controllers
          
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateTask(TaskItemDto taskItemDto)
+        public async Task<IActionResult> UpdateTask(UpdateTaskDto taskItemDto)
         {
             var taskResult = await _taskService.UpdateTask(taskItemDto);
             return GetActionResult<TaskItemDto>(taskResult);
@@ -50,7 +50,7 @@ namespace TeamTaskManager.Controllers
             return GetActionResult<IEnumerable<TaskItemDto>>(tasksResult);
         }
 
-        [HttpGet("id")]
+        [HttpGet("taskId")]
         public async Task<IActionResult> GetTaskById(Guid taskId)
         {
             var taskResult = await _taskService.GetTaskByIdAsync(taskId);

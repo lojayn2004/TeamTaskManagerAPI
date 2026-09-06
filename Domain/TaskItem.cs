@@ -1,4 +1,6 @@
-﻿namespace TeamTaskManager.Domain
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TeamTaskManager.Domain
 {
     public class TaskItem
     {
@@ -15,6 +17,7 @@
 
         public string? AssignedUserId { get; set; } = string.Empty;
 
+        [ForeignKey(nameof(AssignedUserId))]
         public ApplicationUser? User { get; set; }
     }
 }
