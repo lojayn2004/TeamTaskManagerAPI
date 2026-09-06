@@ -236,6 +236,7 @@ namespace TeamTaskManager.Tests
                 t.GetProperty("id").GetString() == taskId &&
                 t.GetProperty("taskStatus").GetString() == "Done"
             );
+            
             Assert.True(completedTaskFound, $"Task {taskId} must be marked as Done in employee's tasks");
         }
     }

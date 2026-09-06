@@ -53,8 +53,6 @@ namespace TeamTaskManager.Services.Implementations
             if (task == null)
                 return ServiceResult<TaskItemDto>.Error(ServiceError.NotFound, $"Task with Id {taskId} is Not Found");
 
-            Console.WriteLine("===================================================================");
-            Console.WriteLine(task.Project.CreatedByUserId);
             var user = await _userManager.FindByIdAsync(UserId);
             if (user == null)
                 return ServiceResult<TaskItemDto>.Error(ServiceError.NotFound, $"User with Id {UserId} is Not Found");
@@ -64,10 +62,7 @@ namespace TeamTaskManager.Services.Implementations
             
             task.TaskStatus = Domain.TaskStatus.Done;
             _taskRepo.UpdateTask(task);
-            Console.WriteLine("===================================================================");
-            Console.WriteLine(task.Project.CreatedByUserId);
-
-
+           
             if (task.Project.CreatedByUserId != null)
             {
                 string message =  $"Task {taskId} is completed by Employee {user.Email}.";

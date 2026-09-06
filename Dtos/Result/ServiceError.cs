@@ -6,6 +6,7 @@
         NotFound,
         Validation,
         Conflict,
+        ServerError,
         None
 
     }
