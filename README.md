@@ -79,7 +79,7 @@ The system enforces two primary roles with explicit policy boundaries:
 | List All Tasks | `GET /api/task` | ✅ | ❌ (403) | ❌ (401) |
 | Get Task by ID | `GET /api/task/{taskId}` | ✅ | ❌ (403) | ❌ (401) |
 | Update Task | `PUT /api/task` | ✅ | ❌ (403) | ❌ (401) |
-| Delete Task | `DELETE /api/task?taskId={guid}` | ✅ | ❌ (403) | ❌ (401) |
+| Delete Task | `DELETE /api/{taskId}` | ✅ | ❌ (403) | ❌ (401) |
 | Assign Task | `POST /api/task/assign` | ✅ | ❌ (403) | ❌ (401) |
 | View My Tasks | `GET /api/user-tasks` | ❌ (403) | ✅ | ❌ (401) |
 | Complete Task | `PUT /api/user-tasks/mark?taskId={guid}` | ❌ (403) | ✅ *(Own only)* | ❌ (401) |

@@ -15,8 +15,7 @@ namespace TeamTaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTaskAsync(CreateTaskDto createTaskDto)
         {
-            //if(!ModelState.IsValid) 
-            //    return BadRequest();
+            
 
             var taskResult = await _taskService.AddTaskAsync(createTaskDto);
             return GetActionResult<TaskItemDto>(taskResult);
@@ -30,7 +29,7 @@ namespace TeamTaskManager.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{taskId}")]
         public async Task<IActionResult> DeleteTaskAsync(Guid taskId)
         {
             var taskResult = await _taskService.DeleteTaskAsync(taskId);
