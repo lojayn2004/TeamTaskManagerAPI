@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Auth;
@@ -12,7 +12,7 @@ namespace TeamTaskManager.Services.Implementations
     public class AuthService(UserManager<ApplicationUser> _userManager, 
          IOptions<JwtConfigurations> _jwtOptions): IAuthService
     {
-        public async Task<ServiceResult<AuthResponseDto>> Login(LoginDto loginDto)
+        public async Task<ServiceResult<AuthResponseDto>> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
@@ -26,12 +26,12 @@ namespace TeamTaskManager.Services.Implementations
             {
                 UserId = user.Id,
                 Email = user.Email,
-                Token = await JwtHelper.GenerateJwtToken(user, _userManager, _jwtOptions)
+                Token = await JwtHelper.GenerateJwtTokenAsync(user, _userManager, _jwtOptions)
             };
             return ServiceResult<AuthResponseDto>.Ok(authDto);
         }
 
-        public async Task<ServiceResult<AuthResponseDto>> Register(RegisterDto registerDto)
+        public async Task<ServiceResult<AuthResponseDto>> RegisterAsync(RegisterDto registerDto)
         {
             var user = await _userManager.FindByEmailAsync(registerDto.Email);
             if (user != null)
@@ -58,7 +58,7 @@ namespace TeamTaskManager.Services.Implementations
 
             }
 
-            string token = await JwtHelper.GenerateJwtToken(applicationUser, _userManager, _jwtOptions);
+            string token = await JwtHelper.GenerateJwtTokenAsync(applicationUser, _userManager, _jwtOptions);
            
 
             var authDto =  new AuthResponseDto

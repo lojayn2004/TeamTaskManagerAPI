@@ -122,7 +122,7 @@ namespace TeamTaskManager.Tests
             Given()
                 .OAuth2(employeeToken)
             .When()
-                .Delete($"{BaseUrl}/api/project?projectId={Guid.NewGuid()}")
+                .Delete($"{BaseUrl}/api/project/{Guid.NewGuid()}")
             .Then()
                 .StatusCode(403);
 

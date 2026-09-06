@@ -1,4 +1,4 @@
-﻿using TeamTaskManager.Data.Seeding;
+using TeamTaskManager.Data.Seeding;
 
 namespace TeamTaskManager
 {
@@ -7,7 +7,7 @@ namespace TeamTaskManager
         public static async Task<WebApplication> SeedDBAsync(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();
-            await RolesSeeding.SeedRoles(scope.ServiceProvider);
+            await RolesSeeding.SeedRolesAsync(scope.ServiceProvider);
             return app;
         }
     }

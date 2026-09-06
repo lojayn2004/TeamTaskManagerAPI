@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,11 +12,11 @@ namespace TeamTaskManager.Utils
     public static class JwtHelper
     {
         
-        public static async Task<string> GenerateJwtToken(ApplicationUser user, 
+        public static async Task<string> GenerateJwtTokenAsync(ApplicationUser user, 
             UserManager<ApplicationUser> _userManager,
          IOptions<JwtConfigurations> _jwtOptions)
         {
-            var claims = await GetClaims(user, _userManager);
+            var claims = await GetClaimsAsync(user, _userManager);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.Secret));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             
@@ -31,7 +31,7 @@ namespace TeamTaskManager.Utils
             return token;
         }
 
-        private static async Task<List<Claim>> GetClaims(ApplicationUser user, UserManager<ApplicationUser> _userManager)
+        private static async Task<List<Claim>> GetClaimsAsync(ApplicationUser user, UserManager<ApplicationUser> _userManager)
         {
             var claims = new List<Claim>
             {

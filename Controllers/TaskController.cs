@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeamTaskManager.Dtos.Tasks;
 using TeamTaskManager.Services.Contracts;
@@ -13,45 +13,45 @@ namespace TeamTaskManager.Controllers
     public class TaskController(ITaskService _taskService, IUserTaskService _userTaskService) : ApiBaseController
     {
         [HttpPost]
-        public async Task<IActionResult> CreateTask(CreateTaskDto createTaskDto)
+        public async Task<IActionResult> CreateTaskAsync(CreateTaskDto createTaskDto)
         {
             //if(!ModelState.IsValid) 
             //    return BadRequest();
 
-            var taskResult = await _taskService.AddTask(createTaskDto);
+            var taskResult = await _taskService.AddTaskAsync(createTaskDto);
             return GetActionResult<TaskItemDto>(taskResult);
          
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateTask(UpdateTaskDto taskItemDto)
+        public async Task<IActionResult> UpdateTaskAsync(UpdateTaskDto taskItemDto)
         {
-            var taskResult = await _taskService.UpdateTask(taskItemDto);
+            var taskResult = await _taskService.UpdateTaskAsync(taskItemDto);
             return GetActionResult<TaskItemDto>(taskResult);
         }
 
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteTask(Guid taskId)
+        public async Task<IActionResult> DeleteTaskAsync(Guid taskId)
         {
-            var taskResult = await _taskService.DeleteTask(taskId);
+            var taskResult = await _taskService.DeleteTaskAsync(taskId);
             return GetActionResult<string>(taskResult);
         }
         [HttpPost("assign")]
-        public async Task<IActionResult> AssignTaskToUser(AssignTaskDto assignTaskDto)
+        public async Task<IActionResult> AssignTaskToUserAsync(AssignTaskDto assignTaskDto)
         {
-            var taskResult = await _userTaskService.AssignTaskToUser(assignTaskDto);
+            var taskResult = await _userTaskService.AssignTaskToUserAsync(assignTaskDto);
             return GetActionResult<TaskItemDto>(taskResult);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTasks()
+        public async Task<IActionResult> GetAllTasksAsync()
         {
             var tasksResult = await _taskService.GetAllTasksAsync();
             return GetActionResult<IEnumerable<TaskItemDto>>(tasksResult);
         }
 
-        [HttpGet("taskId")]
-        public async Task<IActionResult> GetTaskById(Guid taskId)
+        [HttpGet("{taskId}")]
+        public async Task<IActionResult> GetTaskByIdAsync(Guid taskId)
         {
             var taskResult = await _taskService.GetTaskByIdAsync(taskId);
             return GetActionResult<TaskItemDto?>(taskResult);

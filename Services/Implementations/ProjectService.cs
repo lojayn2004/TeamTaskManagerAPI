@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Project;
 using TeamTaskManager.Dtos.Result;
@@ -9,7 +9,7 @@ namespace TeamTaskManager.Services.Implementations
 {
     public class ProjectService(IProjectRepo _projectRepo, IMapper _mapper) : IProjectService
     {
-        public async Task<ServiceResult<ProjectDto>> AddProject(CreateProjectDto createProjectDto)
+        public async Task<ServiceResult<ProjectDto>> AddProjectAsync(CreateProjectDto createProjectDto)
         {
             var project = _mapper.Map<Project>(createProjectDto);
             bool isAddedSuccessfully = await _projectRepo.AddProjectAsync(project);
@@ -17,7 +17,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<ProjectDto>.Ok(projectDto);
         }
 
-        public async Task<ServiceResult<string>> DeleteProject(Guid projectId)
+        public async Task<ServiceResult<string>> DeleteProjectAsync(Guid projectId)
         {
            var project = await  _projectRepo.GetProjectByIdAsync(projectId);
 
@@ -43,7 +43,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<ProjectDto?>.Ok(mappedProject);
         }
 
-        public async Task<ServiceResult<ProjectDto?>> UpdateProject(UpdateProjectDto projectDto)
+        public async Task<ServiceResult<ProjectDto?>> UpdateProjectAsync(UpdateProjectDto projectDto)
         {
             var project = await _projectRepo.GetProjectByIdAsync(projectDto.Id);
             if (project == null)

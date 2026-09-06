@@ -210,7 +210,7 @@ namespace TeamTaskManager.Tests
                 .Accept("application/json")
                 .OAuth2(managerToken)
             .When()
-                .Get($"{BaseUrl}/api/project/projectId?projectId={nonExistentProjectId}")
+                .Get($"{BaseUrl}/api/project/{nonExistentProjectId}")
             .Then()
                 .StatusCode(404)
                 .Body("message", NHamcrest.Contains.String($"Project with id {nonExistentProjectId} is not found"));
@@ -226,7 +226,7 @@ namespace TeamTaskManager.Tests
                 .Accept("application/json")
                 .OAuth2(managerToken)
             .When()
-                .Get($"{BaseUrl}/api/task/taskId?taskId={nonExistentTaskId}")
+                .Get($"{BaseUrl}/api/task/{nonExistentTaskId}")
             .Then()
                 .StatusCode(404)
                 .Body("message", NHamcrest.Contains.String($"Task with Id {nonExistentTaskId} is Not Found"));
@@ -241,7 +241,7 @@ namespace TeamTaskManager.Tests
             Given()
                 .OAuth2(managerToken)
             .When()
-                .Delete($"{BaseUrl}/api/project?projectId={nonExistentProjectId}")
+                .Delete($"{BaseUrl}/api/project/{nonExistentProjectId}")
             .Then()
                 .StatusCode(404)
                 .Body("message", NHamcrest.Contains.String($"Project with id {nonExistentProjectId} is not found"));

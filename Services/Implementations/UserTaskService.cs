@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using TeamTaskManager.Domain;
@@ -17,7 +17,7 @@ namespace TeamTaskManager.Services.Implementations
         IHubContext<NotificationHub> _hubContext,
         INotificationRepo _notificationRepo) : IUserTaskService
     {
-        public async Task<ServiceResult<TaskItemDto>> AssignTaskToUser(AssignTaskDto taskDto)
+        public async Task<ServiceResult<TaskItemDto>> AssignTaskToUserAsync(AssignTaskDto taskDto)
         {
             var task = await _taskRepo.GetTaskByIdAsync(taskDto.TaskId);
             if (task == null)
@@ -36,7 +36,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<TaskItemDto>.Ok(mappedTask);
         }
 
-        public async Task<ServiceResult<IEnumerable<TaskItemDto>>> GetUserTasks(string UserId)
+        public async Task<ServiceResult<IEnumerable<TaskItemDto>>> GetUserTasksAsync(string UserId)
         {
             var user = await _userManager.FindByIdAsync(UserId);
             if (user == null)
@@ -46,7 +46,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<IEnumerable<TaskItemDto>>.Ok(_mapper.Map<IEnumerable<TaskItemDto>>(tasks));
         }
 
-        public async Task<ServiceResult<TaskItemDto>> MarkTaskAsDone(Guid taskId, string UserId)
+        public async Task<ServiceResult<TaskItemDto>> MarkTaskAsDoneAsync(Guid taskId, string UserId)
         {
             var task = await _taskRepo.GetTaskByIdAsync(new TaskWithProjectSpecification(taskId));
             

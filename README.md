@@ -72,17 +72,17 @@ The system enforces two primary roles with explicit policy boundaries:
 | User Login | `POST /api/auth/login` | ✅ | ✅ | ✅ |
 | Create Project | `POST /api/project` | ✅ | ❌ (403) | ❌ (401) |
 | List All Projects | `GET /api/project` | ✅ | ❌ (403) | ❌ (401) |
-| Get Project by ID | `GET /api/project/projectId` | ✅ | ❌ (403) | ❌ (401) |
+| Get Project by ID | `GET /api/project/{projectId}` | ✅ | ❌ (403) | ❌ (401) |
 | Update Project | `PUT /api/project` | ✅ | ❌ (403) | ❌ (401) |
-| Delete Project | `DELETE /api/project` | ✅ | ❌ (403) | ❌ (401) |
+| Delete Project | `DELETE /api/project/{projectId}` | ✅ | ❌ (403) | ❌ (401) |
 | Create Task | `POST /api/task` | ✅ | ❌ (403) | ❌ (401) |
 | List All Tasks | `GET /api/task` | ✅ | ❌ (403) | ❌ (401) |
-| Get Task by ID | `GET /api/task/taskId` | ✅ | ❌ (403) | ❌ (401) |
+| Get Task by ID | `GET /api/task/{taskId}` | ✅ | ❌ (403) | ❌ (401) |
 | Update Task | `PUT /api/task` | ✅ | ❌ (403) | ❌ (401) |
-| Delete Task | `DELETE /api/task` | ✅ | ❌ (403) | ❌ (401) |
+| Delete Task | `DELETE /api/task?taskId={guid}` | ✅ | ❌ (403) | ❌ (401) |
 | Assign Task | `POST /api/task/assign` | ✅ | ❌ (403) | ❌ (401) |
 | View My Tasks | `GET /api/user-tasks` | ❌ (403) | ✅ | ❌ (401) |
-| Complete Task | `PUT /api/user-tasks/mark` | ❌ (403) | ✅ *(Own only)* | ❌ (401) |
+| Complete Task | `PUT /api/user-tasks/mark?taskId={guid}` | ❌ (403) | ✅ *(Own only)* | ❌ (401) |
 
 ---
 
@@ -146,9 +146,16 @@ Authenticates a user and issues a JWT token.
   }
   ```
 - **`GET /api/project`**: Returns all projects.
-- **`GET /api/project/projectId?projectId={guid}`**: Returns a project by its unique ID.
+- **`GET /api/project/{projectId}`**: Returns a project by its unique ID (path parameter).
 - **`PUT /api/project`**: Updates project title and description.
-- **`DELETE /api/project?projectId={guid}`**: Removes a project.
+  ```json
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "Q3 Infrastructure Overhaul v2",
+    "description": "Updated project description"
+  }
+  ```
+- **`DELETE /api/project/{projectId}`**: Removes a project by its unique ID (path parameter).
 
 ---
 
@@ -164,9 +171,18 @@ Authenticates a user and issues a JWT token.
   }
   ```
 - **`GET /api/task`**: Returns all tasks across all projects.
-- **`GET /api/task/taskId?taskId={guid}`**: Returns a specific task.
+- **`GET /api/task/{taskId}`**: Returns a specific task by its unique ID (path parameter).
 - **`PUT /api/task`**: Updates task details, status, or assignment.
-- **`DELETE /api/task?taskId={guid}`**: Deletes a task.
+  ```json
+  {
+    "id": "9a3841a1-9ef0-4c7b-944f-c4f52622be48",
+    "title": "Configure GitHub Actions & Secrets",
+    "description": "Updated task description",
+    "status": "Pending",
+    "assignedUserId": "b1b705ef-2f47-4f40-8774-7221e64cf123"
+  }
+  ```
+- **`DELETE /api/task?taskId={guid}`**: Deletes a task by ID (query string parameter).
 - **`POST /api/task/assign`**: Assigns a task to an employee and automatically sets its status to `InProgress`.
   ```json
   {
@@ -181,7 +197,7 @@ Authenticates a user and issues a JWT token.
 > **Policy**: `EmployeeOnly` (Requires Bearer token with `Employee` role)
 
 - **`GET /api/user-tasks`**: Returns all tasks assigned to the authenticated employee (filtered using caller's JWT claims).
-- **`PUT /api/user-tasks/mark?taskId={guid}`**: Marks the specified task as `Done`.
+- **`PUT /api/user-tasks/mark?taskId={guid}`**: Marks the specified task as `Done` (query string parameter).
   - Enforces ownership: returns `401 Unauthorized` if another employee or manager attempts to mark someone else's task.
   - Automatically emits a real-time SignalR notification to the project creator.
   - Persists the completion notification to the database.

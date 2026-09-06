@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace TeamTaskManager.Data.Seeding
 {
     public static class RolesSeeding
     {
-        public static async Task SeedRoles(IServiceProvider serviceProvider)
+        public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             string[] roleNames = { "Manager", "Employee" };

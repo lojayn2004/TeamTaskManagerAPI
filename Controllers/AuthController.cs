@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using TeamTaskManager.Dtos.Auth;
 using TeamTaskManager.Services.ServicesAbstractions;
 
@@ -10,16 +10,16 @@ namespace TeamTaskManager.Controllers
     {
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> LoginAsync(LoginDto loginDto)
         {
-            var result = await _authService.Login(loginDto);
+            var result = await _authService.LoginAsync(loginDto);
             return GetActionResult(result);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto registerDto)
+        public async Task<IActionResult> RegisterAsync(RegisterDto registerDto)
         {
-            var result = await _authService.Register(registerDto);
+            var result = await _authService.RegisterAsync(registerDto);
             return GetActionResult(result);
         }
     }

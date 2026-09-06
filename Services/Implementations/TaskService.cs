@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using TeamTaskManager.Domain;
 using TeamTaskManager.Dtos.Result;
 using TeamTaskManager.Dtos.Tasks;
@@ -9,7 +9,7 @@ namespace TeamTaskManager.Services.Implementations
 {
     public class TaskService(ITaskRepo _taskRepo, IProjectRepo _projectRepo,  IMapper _mapper): ITaskService
     {
-        public async Task<ServiceResult<TaskItemDto>> AddTask(CreateTaskDto createTaskDto)
+        public async Task<ServiceResult<TaskItemDto>> AddTaskAsync(CreateTaskDto createTaskDto)
         {
             var task = _mapper.Map<TaskItem>(createTaskDto);
 
@@ -27,7 +27,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<TaskItemDto>.Ok(taskDto);
         }
 
-        public async Task<ServiceResult<string>> DeleteTask(Guid taskId)
+        public async Task<ServiceResult<string>> DeleteTaskAsync(Guid taskId)
         {
             var task = await _taskRepo.GetTaskByIdAsync(taskId);
             if (task == null)
@@ -54,7 +54,7 @@ namespace TeamTaskManager.Services.Implementations
             return ServiceResult<TaskItemDto?>.Ok(mappedTask);
         }
 
-        public async Task<ServiceResult<TaskItemDto?>> UpdateTask(UpdateTaskDto taskDto)
+        public async Task<ServiceResult<TaskItemDto?>> UpdateTaskAsync(UpdateTaskDto taskDto)
         {
             var task = await _taskRepo.GetTaskByIdAsync(taskDto.Id);
             if (task == null)
